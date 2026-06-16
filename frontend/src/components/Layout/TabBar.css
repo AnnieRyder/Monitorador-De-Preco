@@ -1,0 +1,8 @@
+.tab-bar {
+  position: sticky; /* Ou fixed, se preferir que ela nunca saia do rodapé */
+  bottom: 0;
+  width: 100%;
+  background: white;
+  border-top: 1px solid #eee;
+  padding: 10px 0;
+}
