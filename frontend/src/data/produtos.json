@@ -1,5 +1,5 @@
 [
-  { "id": 1, "nome": "Headphone Sony WH-1000XM5", "loja": "Amazon", "precoAtual": "R$ 2.299,00", "desconto": "-30%" },
-  { "id": 2, "nome": "Air Fryer Philips Walita", "loja": "Magalu", "precoAtual": "R$ 449,90", "desconto": "-25%" },
-  { "id": 3, "nome": "Smartwatch Xiaomi", "loja": "Mercado Livre", "precoAtual": "R$ 259,90", "desconto": "-18%" }
+  { "id": 1, "nome": "Headphone Sony WH-1000XM5", "loja": "Amazon", "precoAtual": "R$ 2.299,00", "precoAntigo": "R$ 3.299,00", "desconto": "-30%" },
+  { "id": 2, "nome": "Air Fryer Philips Walita", "loja": "Magalu", "precoAtual": "R$ 449,90", "precoAntigo": "R$ 600,00", "desconto": "-25%" },
+  { "id": 3, "nome": "Smartwatch Xiaomi", "loja": "Mercado Livre", "precoAtual": "R$ 259,90", "precoAntigo": "R$ 317,00", "desconto": "-18%" }
 ]

@@ -1,4 +1,7 @@
-import { FiImage, FiTag, FiShoppingBag, FiSettings, FiEye, FiArrowDown, FiBell } from 'react-icons/fi';
+// frontend/src/components/Dashboard/DashboardResumo.tsx
+import { Link } from 'react-router-dom';
+import { FiTag, FiShoppingBag, FiSettings, FiEye, FiArrowDown, FiBell } from 'react-icons/fi';
+import { HiOutlineFire } from 'react-icons/hi';
 
 export const DashboardResumo = () => {
   return (
@@ -13,41 +16,44 @@ export const DashboardResumo = () => {
       marginBottom: '20px', 
     }}>
       
-      
-      {/* 1. Ícones do Topo */}
+      {/* 1. Ícones do Topo (Linkados com as páginas) */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '25px' }}>
         
-        <div style={{ textAlign: 'center', width: '22%' }}>
+        {/* Meus Produtos */}
+        <Link to="/produtos" style={{ textAlign: 'center', width: '22%', textDecoration: 'none', cursor: 'pointer' }}>
           <div style={{ background: '#eff6ff', width: '50px', height: '50px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiImage size={24} color="#3b82f6" />
+            <FiTag size={22} color="#3b82f6" />
           </div>
-          <p style={{ fontSize: '10px', fontWeight: '500', color: '#444', margin: 0 }}>Meus Produtos</p>
-        </div>
+          <p style={{ fontSize: '10px', fontWeight: '600', color: '#475569', margin: 0 }}>Meus Produtos</p>
+        </Link>
 
-        <div style={{ textAlign: 'center', width: '22%' }}>
+        {/* Promoções */}
+        <Link to="/promocoes" style={{ textAlign: 'center', width: '22%', textDecoration: 'none', cursor: 'pointer' }}>
           <div style={{ background: '#f0fdf4', width: '50px', height: '50px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiTag size={24} color="#22c55e" />
+            <HiOutlineFire size={24} color="#16a34a" />
           </div>
-          <p style={{ fontSize: '10px', fontWeight: '500', color: '#444', margin: 0 }}>Promoções</p>
-        </div>
+          <p style={{ fontSize: '10px', fontWeight: '600', color: '#475569', margin: 0 }}>Promoções</p>
+        </Link>
 
-        <div style={{ textAlign: 'center', width: '22%' }}>
+        {/* Lojas */}
+        <Link to="/lojas" style={{ textAlign: 'center', width: '22%', textDecoration: 'none', cursor: 'pointer' }}>
           <div style={{ background: '#faf5ff', width: '50px', height: '50px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiShoppingBag size={24} color="#a855f7" />
+            <FiShoppingBag size={22} color="#a855f7" />
           </div>
-          <p style={{ fontSize: '10px', fontWeight: '500', color: '#444', margin: 0 }}>Lojas</p>
-        </div>
+          <p style={{ fontSize: '10px', fontWeight: '600', color: '#475569', margin: 0 }}>Lojas</p>
+        </Link>
 
-        <div style={{ textAlign: 'center', width: '22%' }}>
+        {/* Configurações */}
+        <Link to="/configuracoes" style={{ textAlign: 'center', width: '22%', textDecoration: 'none', cursor: 'pointer' }}>
           <div style={{ background: '#fff7ed', width: '50px', height: '50px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiSettings size={24} color="#f97316" />
+            <FiSettings size={22} color="#ea580c" />
           </div>
-          <p style={{ fontSize: '10px', fontWeight: '500', color: '#444', margin: 0 }}>Configurações</p>
-        </div>
+          <p style={{ fontSize: '10px', fontWeight: '600', color: '#475569', margin: 0 }}>Configurações</p>
+        </Link>
 
       </div>
 
-      <h4 style={{ marginBottom: '15px', fontSize: '16px', color: '#1a1a1a', margin: '0 0 15px 0' }}>Resumo</h4>
+      <h4 style={{ marginBottom: '15px', fontSize: '16px', color: '#1a1a1a', margin: '0 0 15px 0', fontWeight: '700' }}>Resumo</h4>
 
       {/* 2. Números com Linhas Divisórias */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #f0f0f0', paddingTop: '20px' }}>
@@ -57,26 +63,26 @@ export const DashboardResumo = () => {
           <div style={{ background: '#eff6ff', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
             <FiEye size={14} color="#3b82f6" />
           </div>
-          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36' }}>12</h4>
-          <p style={{ fontSize: '10px', color: '#888', marginTop: '4px', lineHeight: '1.2' }}>Monitorando<br/>produtos</p>
+          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36', fontWeight: '700' }}>12</h4>
+          <p style={{ fontSize: '10px', color: '#64748b', marginTop: '4px', lineHeight: '1.2', fontWeight: '500' }}>Monitorando<br/>produtos</p>
         </div>
 
         {/* Bloco 5 */}
         <div style={{ flex: 1, textAlign: 'center', borderRight: '1px solid #f0f0f0' }}>
-          <div style={{ width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiArrowDown size={18} color="#22c55e" />
+          <div style={{ background: '#f0fdf4', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
+            <FiArrowDown size={14} color="#16a34a" />
           </div>
-          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36' }}>5</h4>
-          <p style={{ fontSize: '10px', color: '#888', marginTop: '4px', lineHeight: '1.2' }}>Produtos com<br/>queda de preço</p>
+          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36', fontWeight: '700' }}>5</h4>
+          <p style={{ fontSize: '10px', color: '#64748b', marginTop: '4px', lineHeight: '1.2', fontWeight: '500' }}>Produtos com<br/>queda de preço</p>
         </div>
 
         {/* Bloco 2 */}
         <div style={{ flex: 1, textAlign: 'center' }}>
-          <div style={{ width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
-            <FiBell size={16} color="#f97316" />
+          <div style={{ background: '#fff7ed', width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px' }}>
+            <FiBell size={14} color="#ea580c" />
           </div>
-          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36' }}>2</h4>
-          <p style={{ fontSize: '10px', color: '#888', marginTop: '4px', lineHeight: '1.2' }}>Alertas não<br/>lidos</p>
+          <h4 style={{ margin: 0, fontSize: '18px', color: '#0b1e36', fontWeight: '700' }}>2</h4>
+          <p style={{ fontSize: '10px', color: '#64748b', marginTop: '4px', lineHeight: '1.2', fontWeight: '500' }}>Alertas não<br/>lidos</p>
         </div>
 
       </div>
