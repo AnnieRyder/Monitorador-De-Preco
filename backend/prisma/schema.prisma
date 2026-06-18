@@ -1,0 +1,51 @@
+// backend/prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. Tabela de Usuários (Rayane Vitoria, Lucas Silva, etc.)
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String
+  email     String   @unique
+  senha     String
+  plano     String   @default("Plano Gratuito") // Plano Gratuito, Premium
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamento: Um usuário pode monitorar vários produtos
+  produtos  Produto[]
+}
+
+// 2. Tabela de Produtos cadastrados para monitoramento
+model Produto {
+  id           String   @id @default(uuid())
+  nome         String
+  url          String   @unique
+  loja         String   // Amazon, Mercado Livre, Magalu
+  imagem       String?
+  precoAlvo    Float    // Meta de preço definida pelo usuário
+  usuarioId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relacionamentos
+  usuario      Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  historico    HistoricoPreco[]
+}
+
+// 3. Tabela de Histórico (Alimenta os gráficos de linha do Front-end)
+model HistoricoPreco {
+  id         String   @id @default(uuid())
+  preco      Float
+  data       DateTime @default(now())
+  produtoId  String
+
+  // Relacionamento: Pertence a um produto específico
+  produto    Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+}
