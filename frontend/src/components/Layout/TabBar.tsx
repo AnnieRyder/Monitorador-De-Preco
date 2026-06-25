@@ -55,10 +55,10 @@ export const TabBar = () => {
           alignItems: 'flex-end',
           height: '65px',
           boxShadow: '0 -4px 16px rgba(0, 0, 0, 0.04)',
-        position: 'fixed', // Mudado de 'relative' para 'fixed'
-        bottom: 0,         // Força colar na borda de baixo
-        left: 0,           // Força alinhar na borda esquerda
-        zIndex: 1000,      // Garante que ela fique por cima dos cards ao scrollar
+        position: 'fixed', 
+        bottom: 0,        
+        left: 0,           
+        zIndex: 1000,      
 
         }}
       >

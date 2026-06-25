@@ -50,7 +50,7 @@ export const CardMeusProdutos = ({ nome, loja, precoAntigo, desconto, metaPreco,
       <div style={{ 
         display: 'flex', 
         alignItems: 'center',  
-        marginLeft: '19px', // Garante uma distância mínima dos textos do centro
+        marginLeft: '19px', 
         flexShrink: 0 
       }}>
         
@@ -92,7 +92,7 @@ export const CardMeusProdutos = ({ nome, loja, precoAntigo, desconto, metaPreco,
   whiteSpace: 'nowrap', 
   marginTop: '4px',
   position: 'relative',
-  left: '29px' // <-- Aumente ou diminua esse número para ajustar a distância exata que você quer empurrar
+  left: '29px' 
 }}>
   {statusPreco}
 </span>

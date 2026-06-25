@@ -33,7 +33,7 @@ export const ResponsiveLayout: React.FC<ResponsiveLayoutProps> = ({ children }) 
 
 const buscarNotificacoesIniciais = async () => {
       try {
-        // ⚡ ALTERADO AQUI: Trocado 'localhost' por IP dinâmico para o celular conseguir conversar com o PC
+        //  Trocado 'localhost' por IP dinâmico para o celular conseguir conversar com o PC
         const resposta = await fetch(`http://${window.location.hostname}:5000/api/produtos`);
         if (resposta.ok) {
           const produtos = await resposta.json();
@@ -82,7 +82,7 @@ const buscarNotificacoesIniciais = async () => {
   ];
 
   const menuUtilitarios = [
-    // ⚡ MUDADO: emBreve agora está true para chamar o modal
+    //  emBreve agora está true para chamar o modal
     { rota: '#', label: 'Favoritos', icon: <FiHeart size={20} />, emBreve: true },
     { rota: '#', label: 'Histórico de preços', icon: <FiClock size={20} />, emBreve: true },
   ];
@@ -135,9 +135,9 @@ const alternarFavorito = (produto: any) => {
     );
   };
 
-  // ===================================================
-  // 📱 RENDERIZAÇÃO MOBILE LÍMPIDA
-  // ===================================================
+  
+  //  RENDERIZAÇÃO MOBILE LÍMPIDA
+  
   if (isMobile) {
     return (
       <LayoutContext.Provider value={{ termoBusca, setTermoBusca, notificacoes, setNotificacoes, marcarComoLida }}>
@@ -152,15 +152,14 @@ const alternarFavorito = (produto: any) => {
     );
   }
 
-  // ===================================================
-  // 💻 RENDERIZAÇÃO DESKTOP (COMPLETA E COM O PERFIL EM BAIXO RESTAURADO)
-  // ===================================================
+  //  RENDERIZAÇÃO DESKTOP 
+
   return (
     <LayoutContext.Provider value={{ termoBusca, setTermoBusca, notificacoes, setNotificacoes, marcarComoLida }}>
       <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: 'Inter, sans-serif' }}>
         <style dangerouslySetInnerHTML={{ __html: styleSheet }} />
         
-        {/* SIDEBAR ESQUERDA FIEL A image_281c18.png */}
+        {/* SIDEBAR ESQUERDA */}
         <aside style={{ width: '280px', backgroundColor: '#fff', display: 'flex', flexDirection: 'column', padding: '32px 16px 24px 16px', position: 'fixed', height: '100vh', boxSizing: 'border-box', borderRight: '1px solid #f1f5f9', zIndex: 1010 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', paddingLeft: '20px', marginBottom: '36px' }}>
             <div style={{ backgroundColor: '#6366f1', padding: '10px', borderRadius: '14px', display: 'flex', boxShadow: '0 4px 12px rgba(99, 102, 241, 0.25)' }}>
@@ -180,7 +179,7 @@ const alternarFavorito = (produto: any) => {
             {menuSuporte.map(renderLink)}
           </nav>
 
-          {/* ⚡ RESTAURADO: Aba Perfil no rodapé da Sidebar Desktop (Sua marcação em vermelho) */}
+        
           <div 
             onClick={() => navigate('/perfil')}
             style={{
@@ -235,7 +234,7 @@ const alternarFavorito = (produto: any) => {
                 </div>
               )}
 
-              {/* ⚡ VINCULADO: Coração do Topo também abre o Modal "Em breve" dos Favoritos */}
+              {/*  abre o Modal "Em breve" dos Favoritos */}
               <div onClick={() => abrirPopup('Favoritos')} style={{ cursor: 'pointer', display: 'flex' }}>
                 <FiHeart size={22} color="#475569" />
               </div>

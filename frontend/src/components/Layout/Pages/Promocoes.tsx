@@ -9,9 +9,9 @@ import { HiOutlineFire } from 'react-icons/hi';
 export const Promocoes = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   
-  // ==========================================
+  
   // ESTADOS E LÓGICAS ORIGINAIS (MOBILE)
-  // ==========================================
+ 
   const [categoriaAtiva, setCategoriaAtiva] = useState('Todas');
   
   const categorias = [
@@ -35,9 +35,9 @@ export const Promocoes = () => {
     { nome: "Kabum!", desconto: "Até 35% OFF" },
   ];
 
-  // ==========================================
+
   // NOVOS ESTADOS E LÓGICAS (DESKTOP)
-  // ==========================================
+
   const [categoriaAtivaWeb, setCategoriaAtivaWeb] = useState('Todas as promoções');
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
   
@@ -124,9 +124,8 @@ export const Promocoes = () => {
     categoriaAtivaWeb === 'Todas as promoções' || categoriaAtivaWeb === 'Em alta' ? true : p.cat === categoriaAtivaWeb
   );
 
-  // ==========================================
   // RENDERIZAÇÃO MOBILE INTACTA
-  // ==========================================
+
   if (isMobile) {
     return (
       <div style={{ padding: '20px', backgroundColor: '#f8fafc', minHeight: '100vh', boxSizing: 'border-box', paddingBottom: '100px' }}>
@@ -264,9 +263,9 @@ export const Promocoes = () => {
     );
   }
 
-  // ===================================================
-  // RENDERIZAÇÃO DESKTOP CORRIGIDA E PROPORCIONAL
-  // ===================================================
+  
+  // RENDERIZAÇÃO DESKTOP 
+ 
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '0 10px 40px 10px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}>
       

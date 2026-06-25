@@ -70,12 +70,14 @@ export const Notificacoes = () => {
         }
 
         if (p.historico && p.historico.length >= 2) {
-          const atual = p.historico[0].preco;
-          const anterior = p.historico[1].preco;
-          if (atual < anterior && !notificacoesGlobais.some((n:any) => n.id === `queda-${p.id}-${atual}`)) {
-            novasNotificacoes.push({ id: `queda-${p.id}-${atual}`, produtoId: p.id, texto: `📉 Queda de preço: ${p.nome} caiu para R$ ${atual.toLocaleString('pt-BR')}`, lida: false });
-          } else if (atual > anterior && !notificacoesGlobais.some((n:any) => n.id === `alta-${p.id}-${atual}`)) {
-            novasNotificacoes.push({ id: `alta-${p.id}-${atual}`, produtoId: p.id, texto: `📈 Aumento de preço: ${p.nome} subiu para R$ ${atual.toLocaleString('pt-BR')}`, lida: false });
+          const atual = Number(p.historico[0].preco);
+          const anterior = Number(p.historico[1].preco);
+          if (atual > 0 && anterior > 0 && atual !== anterior) {
+            if (atual < anterior && !notificacoesGlobais.some((n:any) => n.id === `queda-${p.id}-${atual}`)) {
+              novasNotificacoes.push({ id: `queda-${p.id}-${atual}`, produtoId: p.id, texto: `📉 Queda de preço: ${p.nome} caiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
+            } else if (atual > anterior && !notificacoesGlobais.some((n:any) => n.id === `alta-${p.id}-${atual}`)) {
+              novasNotificacoes.push({ id: `alta-${p.id}-${atual}`, produtoId: p.id, texto: `📈 Aumento de preço: ${p.nome} subiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
+            }
           }
         }
 
@@ -158,9 +160,9 @@ export const Notificacoes = () => {
   const totalPausados = alertas.filter(a => a.status === 'Pausado').length;
 
 
-  // ==========================================
+  
   // ESTADOS ORIGINAIS DO SEU MOBILE
-  // ==========================================
+
   const [filtroAtivo, setFiltroAtivo] = useState('Todas');
   const filtros = [
     { id: 'Todas', label: 'Todas', qtd: 12 },
@@ -188,9 +190,9 @@ export const Notificacoes = () => {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontWeight: 'bold' }}>Carregando alertas...</div>;
   }
 
-  // ==========================================
+ 
   // MOBILE RENDER (100% INTACTO DO SEU CÓDIGO)
-  // ==========================================
+
   if (isMobile) {
     return (
       <div style={{ padding: '20px', backgroundColor: '#f8fafc', minHeight: '100vh', boxSizing: 'border-box', paddingBottom: '100px' }}>
@@ -317,9 +319,9 @@ export const Notificacoes = () => {
     );
   }
 
-  // ==========================================
+
   // DESKTOP RENDER (NOVO MOCKUP FIEL - ALERTAS)
-  // ==========================================
+  
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '0 10px 40px 10px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}>
       
@@ -339,7 +341,7 @@ export const Notificacoes = () => {
           
           {/* CARDS DE RESUMO */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '32px' }}>
-            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '14px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '24px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ backgroundColor: '#f3e8ff', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FiBell size={24} color="#8b5cf6" /></div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#0f172a', lineHeight: '1.2' }}>{totalAtivos}</h3>
@@ -348,7 +350,7 @@ export const Notificacoes = () => {
               </div>
             </div>
 
-            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '14px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '24px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ backgroundColor: '#ecfdf5', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FiCheckCircle size={24} color="#10b981" /></div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#0f172a', lineHeight: '1.2' }}>{totalDisparados}</h3>
@@ -357,7 +359,7 @@ export const Notificacoes = () => {
               </div>
             </div>
 
-            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '14px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '24px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ backgroundColor: '#fff7ed', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FiClock size={24} color="#f97316" /></div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#0f172a', lineHeight: '1.2' }}>{totalAguardando}</h3>
@@ -366,7 +368,7 @@ export const Notificacoes = () => {
               </div>
             </div>
 
-            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '14px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '24px', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ backgroundColor: '#eff6ff', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FiBellOff size={24} color="#3b82f6" /></div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ margin: 0, fontSize: '24px', fontWeight: '800', color: '#0f172a', lineHeight: '1.2' }}>{totalPausados}</h3>
@@ -398,10 +400,11 @@ export const Notificacoes = () => {
               })}
             </div>
 
-            {/* TABELA DE ALERTAS */}
+            {/*TABELA DE ALERTAS CORRIGIDA COM MINMAX */}
             <div style={{ width: '100%', borderCollapse: 'collapse' }}>
+              
               {/* Header da Tabela */}
-              <div style={{ display: 'grid', gridTemplateColumns: '2.5fr 1.2fr 1.2fr 1fr 1fr 80px', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0', marginBottom: '16px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2.5fr) minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.2fr) 80px', gap: '16px', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0', marginBottom: '16px' }}>
                 <span style={{ fontSize: '12px', fontWeight: '600', color: '#94a3b8' }}>Alerta</span>
                 <span style={{ fontSize: '12px', fontWeight: '600', color: '#94a3b8' }}>Condição</span>
                 <span style={{ fontSize: '12px', fontWeight: '600', color: '#94a3b8' }}>Preço alvo</span>
@@ -414,14 +417,14 @@ export const Notificacoes = () => {
               {alertasPaginados.map(a => {
                 const cores = getStatusColor(a.status);
                 return (
-                  <div key={a.id} style={{ display: 'grid', gridTemplateColumns: '2.5fr 1.2fr 1.2fr 1fr 1fr 80px', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
+                  <div key={a.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2.5fr) minmax(0, 1.2fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.2fr) 80px', gap: '16px', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
                     
                     {/* Alerta (Img + Nome + Loja) */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', paddingRight: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', minWidth: 0 }}>
                       <div style={{ width: '48px', height: '48px', backgroundColor: '#f8fafc', borderRadius: '12px', padding: '6px', border: '1px solid #f1f5f9', flexShrink: 0 }}>
                         <img src={a.imagem || 'https://via.placeholder.com/48'} alt={a.nome} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       </div>
-                      <div style={{ minWidth: 0 }}>
+                      <div style={{ minWidth: 0, flex: 1 }}>
                         <h4 style={{ margin: 0, fontSize: '14px', fontWeight: '700', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.nome}</h4>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
                           <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '500' }}>{a.loja}</span>
@@ -430,41 +433,41 @@ export const Notificacoes = () => {
                     </div>
 
                     {/* Condição */}
-                    <div>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#475569', fontWeight: '500' }}>Preço menor que</p>
-                      <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748b' }}>R$ {a.precoAlvo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#475569', fontWeight: '500', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Preço menor que</p>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>R$ {a.precoAlvo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
                     </div>
 
                     {/* Preço Alvo */}
-                    <div>
-                      <span style={{ fontSize: '15px', fontWeight: '800', color: '#10b981' }}>R$ {a.precoAlvo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <span style={{ fontSize: '15px', fontWeight: '800', color: '#10b981', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>R$ {a.precoAlvo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                     </div>
 
                     {/* Status Badge */}
-                    <div>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: cores.bg, padding: '6px 10px', borderRadius: '8px' }}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: cores.dot }} />
-                        <span style={{ fontSize: '12px', fontWeight: '700', color: cores.text }}>{a.status}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: cores.bg, padding: '6px 10px', borderRadius: '8px', maxWidth: '100%' }}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: cores.dot, flexShrink: 0 }} />
+                        <span style={{ fontSize: '12px', fontWeight: '700', color: cores.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.status}</span>
                       </div>
                     </div>
 
                     {/* Criado em */}
-                    <div>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#475569', fontWeight: '500' }}>{a.dataCriacao}</p>
-                      <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748b' }}>{a.horaCriacao}</p>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#475569', fontWeight: '500', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.dataCriacao}</p>
+                      <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{a.horaCriacao}</p>
                     </div>
 
                     {/* Ações */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '12px' }}>
                       <button 
                         onClick={() => abrirEdicao(a)} 
-                        style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: '8px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}
+                        style={{ background: 'none', border: '1px solid #e2e8f0', borderRadius: '8px', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b', flexShrink: 0 }}
                       >
                         <FiEdit2 size={14} />
                       </button>
                       <button 
                         onClick={() => abrirEmBreve("Mais opções")} 
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', flexShrink: 0 }}
                       >
                         <FiMoreVertical size={16} />
                       </button>

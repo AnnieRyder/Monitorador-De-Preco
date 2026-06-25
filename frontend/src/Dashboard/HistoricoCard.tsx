@@ -10,7 +10,7 @@ export const HistoricoCard = ({ nome, descricao, precoAtual, precoAntigo, data }
       marginBottom: '10px',
       backgroundColor: '#fff'
     }}>
-      {/* Ícone de Sacola (igual ao seu print) */}
+      {/* Ícone de Sacola*/}
       <div style={{ 
         width: '50px', height: '50px', 
         backgroundColor: '#f0fdf4', 

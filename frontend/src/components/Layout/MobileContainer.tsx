@@ -1,6 +1,6 @@
 // frontend/src/components/Layout/MobileContainer.tsx
 import React from 'react';
-import './MobileContainer.css'; // Vamos criar esse arquivo
+import './MobileContainer.css'; 
 
 interface Props {
   children: React.ReactNode;

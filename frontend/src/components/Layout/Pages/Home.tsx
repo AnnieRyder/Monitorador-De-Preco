@@ -76,7 +76,7 @@ export const Home = () => {
 
     carregarFeed();
 
-    // ⚡ POLLING: Atualiza a Dashboard automaticamente a cada 15 segundos
+    // POLLING: Atualiza a Dashboard automaticamente a cada 15 segundos
     const intervaloDeAtualizacao = setInterval(() => {
       carregarFeed();
     }, 15000);
@@ -116,7 +116,7 @@ export const Home = () => {
     return { precoAtual, precoAntigo, porcentagemDesconto };
   };
 
-  // ⚡ CORREÇÃO: Total Economizado usando a Calculadora Universal
+  // CORREÇÃO: Total Economizado usando a Calculadora Universal
   const totalEconomizado = produtosFiltrados.reduce((acc: number, p: any) => {
     const { precoAtual, precoAntigo } = getValoresDoProduto(p);
     if (precoAntigo > precoAtual && precoAtual > 0) {
@@ -145,9 +145,9 @@ export const Home = () => {
     );
   }
 
-  // ===================================================
-  // 📱 INTERFACE MOBILE RENDERIZADA
-  // ===================================================
+  
+  //  INTERFACE MOBILE RENDERIZADA
+ 
   if (isMobile) {
     return (
       <div style={{ paddingBottom: '40px' }}>
@@ -273,9 +273,9 @@ export const Home = () => {
     );
   }
 
-  // ===================================================
-  // 💻 INTERFACE DESKTOP RENDERIZADA
-  // ===================================================
+  
+  //  INTERFACE DESKTOP RENDERIZADA
+  
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '0 10px 40px 10px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}>
       
@@ -489,7 +489,7 @@ export const Home = () => {
                   <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, padding: '6px' }}><img src={loja.logo} alt={loja.nome} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 }}><h4 style={{ margin: 0, fontSize: '13px', fontWeight: '700', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{loja.nome}</h4><span style={{ backgroundColor: '#f0fdf4', color: '#16a34a', padding: '4px 6px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', marginTop: '4px' }}>{loja.desconto}</span></div>
                 </div>
-                {/* ⚡ BOTÃO VER OFERTAS AGORA CHAMA O POPUP DA HOME */}
+                {/* BOTÃO VER OFERTAS AGORA CHAMA O POPUP DA HOME */}
                 <button 
                   onClick={() => abrirPopupHome(`Ofertas da ${loja.nome}`)}
                   style={{ width: '100%', padding: '10px 0', border: '1px solid #e0e7ff', borderRadius: '10px', backgroundColor: '#fff', color: '#6366f1', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}
@@ -503,7 +503,7 @@ export const Home = () => {
         </div>
       </div>
 
-      {/* ⚡ RENDERIZAÇÃO DO MODAL DE "EM BREVE" DA HOME */}
+      {/* RENDERIZAÇÃO DO MODAL DE "EM BREVE" DA HOME */}
       {mostrarPopupHome && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(15, 23, 42, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, backdropFilter: 'blur(4px)' }}>
           <div style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '32px', width: '85%', maxWidth: '380px', textAlign: 'center', border: '1px solid #f1f5f9' }}>

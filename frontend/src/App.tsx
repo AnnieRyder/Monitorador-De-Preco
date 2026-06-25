@@ -14,10 +14,9 @@ import { TabBar } from './components/Layout/TabBar';
 function App() {
   return (
     <Router>
-      {/* 1. O ResponsiveLayout fica no topo para decidir se mostra a Sidebar ou o modo Mobile */}
+     
       <ResponsiveLayout>
         
-        {/* Container que gerencia a área das páginas */}
         <div style={{ flex: 1, backgroundColor: 'white' }}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -31,7 +30,7 @@ function App() {
           </Routes>
         </div>
 
-        {/* 2. Deixamos a TabBar aqui embaixo, pois o ResponsiveLayout já vai escondê-la automaticamente no Desktop via CSS! */}
+    
         <TabBar />
         
       </ResponsiveLayout>

@@ -24,9 +24,8 @@ export const Lojas = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ==========================================
   // DADOS ORIGINAIS (MOBILE)
-  // ==========================================
+  
   const resumoDadosMobile = [
     { valor: '28', label: 'Lojas cadastradas', icon: <FiTag size={18} color="#a855f7" /> },
     { valor: '125', label: 'Cupons ativos', icon: <FiAward size={18} color="#22c55e" /> },
@@ -50,9 +49,8 @@ export const Lojas = () => {
     { label: 'Moda', icon: <FiWatch size={16} color="#f97316" /> },
   ];
 
-  // ==========================================
   // DADOS NOVOS (DESKTOP)
-  // ==========================================
+ 
   const lojasDesktopGrid = [
     { nome: 'Amazon', cat: 'Marketplace', nota: '4,8', reviews: '25.6k', promo: '45', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
     { nome: 'Magazine Luiza', cat: 'Eletrodomésticos', nota: '4,7', reviews: '18.3k', promo: '32', logo: 'https://logodownload.org/wp-content/uploads/2014/06/magalu-logo-0.png' },
@@ -80,9 +78,9 @@ export const Lojas = () => {
   ];
 
 
-  // ===================================================
-  // 📱 RENDERIZAÇÃO MOBILE INTACTA DO SEU CÓDIGO
-  // ===================================================
+  
+  //  RENDERIZAÇÃO MOBILE INTACTA 
+ 
   if (isMobile) {
     return (
       <div style={{ padding: '20px', backgroundColor: '#f8fafc', minHeight: '100vh', boxSizing: 'border-box', paddingBottom: '120px' }}>
@@ -198,9 +196,9 @@ export const Lojas = () => {
     );
   }
 
-  // ===================================================
-  // 💻 RENDERIZAÇÃO DESKTOP (MOCKUP FIEL)
-  // ===================================================
+ 
+  // RENDERIZAÇÃO DESKTOP (MOCKUP FIEL)
+
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '0 10px 40px 10px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}>
       

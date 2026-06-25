@@ -82,7 +82,7 @@ export const Produtos = () => {
           ? Math.min(100, Math.round((precoMeta / precoAtualNumerico) * 100))
           : 0;
 
-        // ⚡ EXTRAÇÃO DO HISTÓRICO EM ORDEM CRONOLÓGICA (Antigo para Novo)
+      
         const historicoPrecos = p.historico && p.historico.length > 0 
           ? [...p.historico].reverse().map((h: any) => h.preco) 
           : [precoAtualNumerico];
