@@ -14,7 +14,7 @@ O sistema conta com uma versão Web (Desktop) robusta, funcional e com interface
 
 | 💻 Interface Desktop (Concluída) 
 | :---: | :---: |
-<img src="./frontend/src/assets/0625.gif" width="100%" alt="Dashboard Desktop"> 
+<img src="./frontend/src/assets/0625.gif" alt="Dashboard Desktop"> 
 
 
 | 📱 Interface Mobile (Em Construção) |
