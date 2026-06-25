@@ -51,6 +51,7 @@ export const Notificacoes = () => {
       const dados = await resposta.json();
 
       const novasNotificacoes: any[] = [];
+      const lidasSalvas = JSON.parse(localStorage.getItem('precocerto_lidas') || '[]');
 
       const alertasMapeados = dados.map((p: any) => {
         const precoAtual = p.historico && p.historico.length > 0 ? p.historico[0].preco : (p.precoAtual || 0);
@@ -62,21 +63,26 @@ export const Notificacoes = () => {
           status = 'Pausado';
         } else if (precoAtual > 0 && precoAlvo > 0 && precoAtual <= precoAlvo) {
           status = 'Disparado';
-          if (!notificacoesGlobais.some((n:any) => n.id === `meta-${p.id}`)) {
-            novasNotificacoes.push({ id: `meta-${p.id}`, produtoId: p.id, texto: `🎯 Meta atingida! ${p.nome} está por R$ ${precoAtual.toLocaleString('pt-BR')}`, lida: false });
+          const idMeta = `meta-${p.id}`;
+          if (!notificacoesGlobais.some((n:any) => n.id === idMeta) && !lidasSalvas.includes(idMeta)) {
+            novasNotificacoes.push({ id: idMeta, produtoId: p.id, texto: `🎯 Meta atingida! ${p.nome} está por R$ ${precoAtual.toLocaleString('pt-BR')}`, lida: false });
           }
         } else if (precoAtual === 0) {
           status = 'Aguardando';
         }
 
+        // ⚡ GERAÇÃO CORRETA DE NOTIFICAÇÕES (SEM DUPLICAR E COM PERSISTÊNCIA)
         if (p.historico && p.historico.length >= 2) {
           const atual = Number(p.historico[0].preco);
           const anterior = Number(p.historico[1].preco);
           if (atual > 0 && anterior > 0 && atual !== anterior) {
-            if (atual < anterior && !notificacoesGlobais.some((n:any) => n.id === `queda-${p.id}-${atual}`)) {
-              novasNotificacoes.push({ id: `queda-${p.id}-${atual}`, produtoId: p.id, texto: `📉 Queda de preço: ${p.nome} caiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
-            } else if (atual > anterior && !notificacoesGlobais.some((n:any) => n.id === `alta-${p.id}-${atual}`)) {
-              novasNotificacoes.push({ id: `alta-${p.id}-${atual}`, produtoId: p.id, texto: `📈 Aumento de preço: ${p.nome} subiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
+            const idQueda = `queda-${p.id}-${atual}`;
+            const idAlta = `alta-${p.id}-${atual}`;
+
+            if (atual < anterior && !notificacoesGlobais.some((n:any) => n.id === idQueda) && !lidasSalvas.includes(idQueda)) {
+              novasNotificacoes.push({ id: idQueda, produtoId: p.id, texto: `📉 Queda de preço: ${p.nome} caiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
+            } else if (atual > anterior && !notificacoesGlobais.some((n:any) => n.id === idAlta) && !lidasSalvas.includes(idAlta)) {
+              novasNotificacoes.push({ id: idAlta, produtoId: p.id, texto: `📈 Aumento de preço: ${p.nome} subiu para R$ ${atual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, lida: false });
             }
           }
         }
@@ -90,7 +96,11 @@ export const Notificacoes = () => {
       setAlertas(alertasMapeados);
       
       if (novasNotificacoes.length > 0 && setNotificacoes) {
-        setNotificacoes((prev: any) => [...prev, ...novasNotificacoes]);
+        setNotificacoes((prev: any) => {
+          // Filtra para garantir que não vai duplicar nada que já esteja no estado
+          const filtradas = novasNotificacoes.filter(nova => !prev.some(n => n.id === nova.id));
+          return [...prev, ...filtradas];
+        });
       }
 
     } catch (erro) {
@@ -318,7 +328,6 @@ export const Notificacoes = () => {
       </div>
     );
   }
-
 
   // DESKTOP RENDER (NOVO MOCKUP FIEL - ALERTAS)
   

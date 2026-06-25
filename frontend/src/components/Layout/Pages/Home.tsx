@@ -3,12 +3,55 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   FiBell, FiTag, FiTrendingDown, FiDollarSign, 
-  FiPieChart, FiStar, FiChevronRight, FiChevronLeft, FiSearch, FiInfo
+  FiPieChart, FiStar, FiChevronRight, FiChevronLeft, FiSearch, FiInfo, FiEye, FiSettings
 } from 'react-icons/fi';
 
-import { CardProduto } from '../Card/CardProduto';
 import { DashboardResumo } from '../../../Dashboard/DashboardResumo';
 import { useLayoutContext } from '../../ResponsivoLayout';
+
+// ⚡ COMPONENTE DE CARD INTERNO PARA O MOBILE (Garante que a imagem carregue)
+const CardProdutoMobile = ({ nome, loja, precoAtual, precoAntigo, desconto, imagem }: any) => (
+  <div style={{ display: 'flex', backgroundColor: '#fff', borderRadius: '20px', padding: '16px', border: '1px solid #f1f5f9', position: 'relative', boxShadow: '0 2px 4px rgba(0,0,0,0.01)' }}>
+    
+    <div style={{ width: '80px', height: '80px', backgroundColor: '#f8fafc', borderRadius: '12px', flexShrink: 0, padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #f1f5f9' }}>
+      {imagem ? (
+        <img src={imagem} alt={nome} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+      ) : (
+        <div style={{ width: '100%', height: '100%', backgroundColor: '#e2e8f0', borderRadius: '8px' }} />
+      )}
+    </div>
+    
+    <div style={{ marginLeft: '16px', flex: 1, minWidth: 0, paddingRight: '20px' }}>
+      <h4 style={{ margin: 0, fontSize: '14px', fontWeight: '800', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{nome}</h4>
+      <p style={{ margin: '2px 0 8px 0', fontSize: '12px', color: '#64748b' }}>{loja}</p>
+      
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span style={{ color: '#16a34a', fontSize: '14px', fontWeight: '800' }}>
+          {precoAtual}
+        </span>
+      </div>
+      
+      {/* ⚡ Exibe o Preço Antigo Riscado embaixo */}
+      <p style={{ margin: '4px 0 0 0', fontSize: '11px', color: '#94a3b8', textDecoration: precoAntigo ? 'line-through' : 'none' }}>
+        {precoAntigo ? precoAntigo : '\u00A0'}
+      </p>
+    </div>
+    
+    {desconto ? (
+      <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)' }}>
+        <span style={{ backgroundColor: '#ecfdf5', color: '#10b981', padding: '4px 8px', borderRadius: '8px', fontSize: '11px', fontWeight: '800' }}>
+          {desconto}
+        </span>
+      </div>
+    ) : (
+      <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)' }}>
+        <span style={{ backgroundColor: '#f1f5f9', color: '#94a3b8', padding: '4px 8px', borderRadius: '8px', fontSize: '11px', fontWeight: '700' }}>
+          -
+        </span>
+      </div>
+    )}
+  </div>
+);
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -51,21 +94,38 @@ export const Home = () => {
         const dados = await resposta.json();
         setProdutos(dados);
 
-        if (setNotificacoes && (!notificacoes || notificacoes.length === 0)) {
-          const alertasGerados: any[] = [];
+        // ⚡ GERAÇÃO DE NOTIFICAÇÕES (Sininho e Histórico)
+        if (setNotificacoes) {
+          const novasNotificacoes: any[] = [];
+          
           dados.forEach((p: any) => {
-            const precoAtual = p.historico && p.historico.length > 0 ? p.historico[0].preco : p.precoAtual;
-            if (precoAtual <= p.precoAlvo) {
-              alertasGerados.push({
-                id: `notif-${p.id}`,
-                produtoId: p.id,
-                texto: `O preço do ${p.nome.slice(0, 20)}... caiu na ${p.loja}!`,
-                preco: precoAtual,
-                lida: false
-              });
+            const precoAtual = p.historico && p.historico.length > 0 ? p.historico[0].preco : (p.precoAtual || 0);
+            
+            // Verifica Queda/Alta real no histórico (TRAVA DE SEGURANÇA CORRIGIDA)
+            if (p.historico && p.historico.length >= 2) {
+              const atual = Number(p.historico[0].preco);
+              const anterior = Number(p.historico[1].preco);
+              
+              if (atual > 0 && anterior > 0 && atual !== anterior) {
+                if (atual < anterior && !notificacoes.some((n:any) => n.id === `queda-${p.id}-${atual}`)) {
+                  novasNotificacoes.push({ id: `queda-${p.id}-${atual}`, tipo: 'queda', produtoId: p.id, texto: `📉 O ${p.nome.slice(0, 15)}... caiu para R$ ${atual.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`, lida: false });
+                } else if (atual > anterior && !notificacoes.some((n:any) => n.id === `alta-${p.id}-${atual}`)) {
+                  novasNotificacoes.push({ id: `alta-${p.id}-${atual}`, tipo: 'alta', produtoId: p.id, texto: `📈 O ${p.nome.slice(0, 15)}... subiu para R$ ${atual.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`, lida: false });
+                }
+              }
+            }
+
+            // Verifica se a Meta foi batida (Opcional, caso queira notificar a meta no sininho da Home)
+            if (precoAtual > 0 && p.precoAlvo > 0 && precoAtual <= p.precoAlvo) {
+              if (!notificacoes.some((n:any) => n.id === `meta-${p.id}`)) {
+                novasNotificacoes.push({ id: `meta-${p.id}`, tipo: 'meta', produtoId: p.id, texto: `🎯 Meta batida! ${p.nome.slice(0, 15)}... por R$ ${precoAtual.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`, lida: false });
+              }
             }
           });
-          setNotificacoes(alertasGerados);
+          
+          if (novasNotificacoes.length > 0) {
+            setNotificacoes((prev: any) => [...prev, ...novasNotificacoes]);
+          }
         }
       } catch (erro) {
         console.error("Erro ao conectar com a API de feed:", erro);
@@ -85,7 +145,9 @@ export const Home = () => {
       window.removeEventListener('resize', handleResize);
       clearInterval(intervaloDeAtualizacao);
     };
-  }, [setNotificacoes]);
+  }, [notificacoes, setNotificacoes]);
+
+  const notificacoesGlobais = notificacoes || [];
 
   const produtosFiltrados = produtos.filter((p: any) => {
     const buscaSegura = termoBusca ? termoBusca.toLowerCase() : "";
@@ -102,9 +164,9 @@ export const Home = () => {
     notificacoes && notificacoes.some((n: any) => n.produtoId === p.id && !n.lida)
   ).length;
 
-  const alertasDisparados = (notificacoes || []).filter((n: any) => !n.lida).length;
+  const alertasDisparados = (notificacoesGlobais || []).filter((n: any) => !n.lida).length;
 
-  // ⚡ CALCULADORA UNIVERSAL DE PREÇOS (Corrige 100% os bugs de descontos zerados)
+  // ⚡ CALCULADORA UNIVERSAL DE PREÇOS
   const getValoresDoProduto = (p: any) => {
     const precoAtual = p.historico && p.historico.length > 0 ? p.historico[0].preco : (p.precoAtual || 0);
     const maiorPrecoHistorico = p.historico && p.historico.length > 0 ? Math.max(...p.historico.map((h: any) => h.preco)) : precoAtual;
@@ -116,7 +178,6 @@ export const Home = () => {
     return { precoAtual, precoAntigo, porcentagemDesconto };
   };
 
-  // CORREÇÃO: Total Economizado usando a Calculadora Universal
   const totalEconomizado = produtosFiltrados.reduce((acc: number, p: any) => {
     const { precoAtual, precoAntigo } = getValoresDoProduto(p);
     if (precoAntigo > precoAtual && precoAtual > 0) {
@@ -124,6 +185,9 @@ export const Home = () => {
     }
     return acc;
   }, 0);
+
+  // Variáveis Dinâmicas para o Dashboard do Mobile
+  const totalComQueda = produtosFiltrados.filter(p => getValoresDoProduto(p).porcentagemDesconto > 0).length;
 
   const lojasOfertas = [
     { nome: 'Amazon', desconto: 'Até 40% OFF', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
@@ -145,21 +209,19 @@ export const Home = () => {
     );
   }
 
-  
-  //  INTERFACE MOBILE RENDERIZADA
- 
+  // ===================================================
+  // 📱 INTERFACE MOBILE RENDERIZADA
+  // ===================================================
   if (isMobile) {
     return (
-      <div style={{ paddingBottom: '40px' }}>
+      <div style={{ paddingBottom: '40px', backgroundColor: '#f8fafc', minHeight: '100vh' }}>
         
         {/* Header Azul Mobile */}
         <div style={{ 
           backgroundColor: '#0b1e36', 
           color: 'white', 
           padding: '30px 20px 80px',
-          borderBottomLeftRadius: '20px',
-          borderBottomRightRadius: '20px',
-          marginBottom: '20px'
+          marginBottom: '2px'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
@@ -194,10 +256,10 @@ export const Home = () => {
                 }}>
                   <h4 style={{ margin: '0 0 8px 0', fontSize: '13px', borderBottom: '1px solid #f1f5f9', paddingBottom: '6px' }}>Alertas Ativos</h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '180px', overflowY: 'auto' }}>
-                    {(notificacoes || []).filter((n: any) => !n.lida).length === 0 ? (
+                    {(notificacoesGlobais || []).filter((n: any) => !n.lida).length === 0 ? (
                       <p style={{ margin: 0, fontSize: '11px', color: '#64748b', textAlign: 'center' }}>Nenhum alerta pendente</p>
                     ) : (
-                      (notificacoes || []).filter((n: any) => !n.lida).map((n: any) => (
+                      (notificacoesGlobais || []).filter((n: any) => !n.lida).map((n: any) => (
                         <div key={n.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#f8fafc', padding: '6px', borderRadius: '8px' }}>
                           <p style={{ margin: 0, fontSize: '11px', color: '#334155', lineHeight: '1.3' }}>{n.texto}</p>
                           <button onClick={(e) => { e.stopPropagation(); marcarComoLida(n.id); }} style={{ backgroundColor: '#6366f1', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '10px', padding: '4px 6px', cursor: 'pointer' }}>Lido</button>
@@ -221,51 +283,64 @@ export const Home = () => {
           </div>
         </div>
 
-        {/* Dashboard Resumo Original */}
-        <div style={{ backgroundColor: 'white', borderRadius: '30px 30px 0 0', marginTop: '-60px', paddingTop: '30px' }}>
-          <DashboardResumo />
-        </div>
+        {/* Dashboard Resumo Externo (Dinâmico e Restaurado) */}
+        <DashboardResumo />
 
-        {/* Listas Originais Mobile */}
+        {/* Listas Originais Mobile com Imagens Inline */}
         <div style={{ marginTop: '32px', padding: '0 20px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '16px', margin: 0, color: '#1a1a1a', fontWeight: '700' }}>Alertas de preço</h3>
-            <span style={{ color: '#3b82f6', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Ver todos</span>
+            <span onClick={() => navigate('/produtos')} style={{ color: '#3b82f6', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Ver todos</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {produtosFiltrados.map((p: any) => {
-              const { precoAtual, precoAntigo, porcentagemDesconto } = getValoresDoProduto(p);
-              
-              return (
-                <CardProduto 
+            {produtosFiltrados
+              .map((p: any) => {
+                const valores = getValoresDoProduto(p);
+                return { ...p, ...valores };
+              })
+              .sort((a, b) => b.porcentagemDesconto - a.porcentagemDesconto)
+              .slice(0, 4)
+              .map((p: any) => (
+                <CardProdutoMobile // ⚡ USANDO O COMPONENTE INTERNO QUE GARANTE A IMAGEM NO MOBILE
                   key={p.id} 
                   nome={p.nome} 
                   loja={p.loja} 
-                  precoAtual={`R$ ${precoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} 
-                  precoAntigo={precoAntigo > precoAtual ? `R$ ${precoAntigo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : ""} 
-                  desconto={porcentagemDesconto > 0 ? `↓ ${porcentagemDesconto}%` : ""} 
+                  imagem={p.imagem}
+                  precoAtual={`R$ ${p.precoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`} 
+                  precoAntigo={p.precoAntigo > p.precoAtual ? `R$ ${p.precoAntigo.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : ""} 
+                  desconto={p.porcentagemDesconto > 0 ? `↓ ${p.porcentagemDesconto}%` : ""} 
                 />
-              );
-            })}
+              ))}
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', marginTop: '36px' }}>
             <h3 style={{ fontSize: '16px', margin: 0, color: '#1a1a1a', fontWeight: '700' }}>Histórico de alertas</h3>
-            <span style={{ color: '#3b82f6', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Ver todos</span>
+            <span onClick={() => navigate('/alertas')} style={{ color: '#3b82f6', fontSize: '13px', fontWeight: '600', cursor: 'pointer' }}>Ver todos</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '16px', border: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '40px', height: '40px', backgroundColor: '#ecfdf5', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}><FiBell size={18} /></div>
-                <div>
-                  <h4 style={{ margin: 0, fontSize: '13px', fontWeight: '700', color: '#1f2937' }}>Notebook Dell Inspiron i15</h4>
-                  <p style={{ margin: '2px 0 0 0', fontSize: '11px', color: '#64748b' }}>Queda de preço detectada</p>
-                </div>
-              </div>
-              <span style={{ fontSize: '13px', fontWeight: '700', color: '#10b981' }}>R$ 2.799,00</span>
-            </div>
+            {notificacoesGlobais.length === 0 ? (
+              <p style={{ fontSize: '13px', color: '#64748b', textAlign: 'center' }}>Nenhum alerta recente.</p>
+            ) : (
+              notificacoesGlobais.slice(0, 3).map((n: any) => {
+                const isQueda = n.tipo === 'queda';
+                const isAlta = n.tipo === 'alta';
+                return (
+                  <div key={n.id} style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '16px', border: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
+                      <div style={{ width: '40px', height: '40px', backgroundColor: isQueda ? '#ecfdf5' : (isAlta ? '#fef2f2' : '#eff6ff'), borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isQueda ? '#10b981' : (isAlta ? '#ef4444' : '#3b82f6'), flexShrink: 0 }}>
+                        <FiBell size={18} />
+                      </div>
+                      <div style={{ minWidth: 0, paddingRight: '8px' }}>
+                        <h4 style={{ margin: 0, fontSize: '13px', fontWeight: '700', color: '#1f2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{n.texto}</h4>
+                        <p style={{ margin: '2px 0 0 0', fontSize: '11px', color: '#64748b' }}>Movimentação detectada</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -273,8 +348,9 @@ export const Home = () => {
     );
   }
 
-  
-  //  INTERFACE DESKTOP RENDERIZADA
+  // ===================================================
+  // 💻 INTERFACE DESKTOP RENDERIZADA
+  // ===================================================
   
   return (
     <div style={{ backgroundColor: '#f8fafc', minHeight: '100vh', padding: '0 10px 40px 10px', boxSizing: 'border-box', fontFamily: 'Inter, sans-serif' }}>
@@ -332,7 +408,6 @@ export const Home = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1.1fr', gap: '24px', marginBottom: '32px', alignItems: 'start' }}>
         <div style={{ backgroundColor: '#fff', borderRadius: '20px', padding: '24px', border: '1px solid #f1f5f9' }}>
           
-          {/* ⚡ CABEÇALHO DO CARD COM LINHA DIVISÓRIA (borderBottom) E PADDING */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid #f1f5f9' }}>
             <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#0f172a' }}>Quedas de preço recentes</h2>
             <span onClick={() => navigate('/produtos')} style={{ fontSize: '14px', color: '#6366f1', fontWeight: '600', cursor: 'pointer' }}>Ver todas</span>
@@ -350,7 +425,7 @@ export const Home = () => {
 
              return (
                   <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto auto auto', alignItems: 'center', gap: '16px', padding: '12px 0', borderBottom: '1px solid #f8fafc', cursor: 'pointer' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 64px) minmax(0, 1fr) auto minmax(0, 55px) auto', alignItems: 'center', gap: '16px', padding: '12px 0', borderBottom: '1px solid #f8fafc', cursor: 'pointer' }}>
                       <div style={{ width: '64px', height: '64px', backgroundColor: '#fff', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', border: '1px solid #f1f5f9' }}>
                         {p.imagem ? <img src={p.imagem} alt={p.nome} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : null}
                       </div>
@@ -419,7 +494,7 @@ export const Home = () => {
               {produtosFiltrados.filter(p => notificacoes && notificacoes.some((n: any) => n.produtoId === p.id && !n.lida)).slice(0, 3).map((p: any) => {
                 const precoAtual = p.historico && p.historico.length > 0 ? p.historico[0].preco : 0;
                 return (
-                  <div key={`alerta-${p.id}`} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto auto', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #f8fafc' }}>
+                  <div key={`alerta-${p.id}`} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 48px) minmax(0, 1fr) auto auto', alignItems: 'center', gap: '12px', padding: '12px 0', borderBottom: '1px solid #f8fafc' }}>
                     <div style={{ width: '48px', height: '48px', backgroundColor: '#fff', borderRadius: '12px', flexShrink: 0, overflow: 'hidden', border: '1px solid #f1f5f9' }}>
                       {p.imagem ? <img src={p.imagem} alt={p.nome} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /> : null}
                     </div>
@@ -489,7 +564,6 @@ export const Home = () => {
                   <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', flexShrink: 0, padding: '6px' }}><img src={loja.logo} alt={loja.nome} style={{ width: '100%', height: '100%', objectFit: 'contain' }} /></div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', minWidth: 0 }}><h4 style={{ margin: 0, fontSize: '13px', fontWeight: '700', color: '#0f172a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>{loja.nome}</h4><span style={{ backgroundColor: '#f0fdf4', color: '#16a34a', padding: '4px 6px', borderRadius: '6px', fontSize: '11px', fontWeight: '700', marginTop: '4px' }}>{loja.desconto}</span></div>
                 </div>
-                {/* BOTÃO VER OFERTAS AGORA CHAMA O POPUP DA HOME */}
                 <button 
                   onClick={() => abrirPopupHome(`Ofertas da ${loja.nome}`)}
                   style={{ width: '100%', padding: '10px 0', border: '1px solid #e0e7ff', borderRadius: '10px', backgroundColor: '#fff', color: '#6366f1', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}
