@@ -220,7 +220,7 @@ export class ProdutoController {
       const { nome, url, imagem, precoAlvo } = req.body;
 
       const produtoAtualizado = await prisma.produto.update({
-        // ⚡ SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
+        //  SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
         where: { id: String(id) }, 
         data: {
           nome: nome,
@@ -245,12 +245,12 @@ export class ProdutoController {
       const { id } = req.params;
 
       await prisma.historicoPreco.deleteMany({
-        // ⚡ SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
+        //  SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
         where: { produtoId: String(id) } 
       });
 
       await prisma.produto.delete({
-        // ⚡ SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
+        //  SOLUÇÃO: String(id) garante ao TypeScript que isso é um texto único
         where: { id: String(id) } 
       });
 

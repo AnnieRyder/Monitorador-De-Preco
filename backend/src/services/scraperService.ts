@@ -34,7 +34,7 @@ export class ScraperService {
     else if (urlLower.includes('kabum')) loja = 'Kabum';
     else if (urlLower.includes('shopee')) loja = 'Shopee'; 
 
-    // ⚡ MODO HEADLESS SILENCIOSO: Roda escondido em segundo plano com argumentos de camuflagem
+    // MODO HEADLESS SILENCIOSO: Roda escondido em segundo plano com argumentos de camuflagem
     const browser = await puppeteer.launch({
       headless: true, 
       args: [

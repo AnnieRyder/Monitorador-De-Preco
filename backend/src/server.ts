@@ -41,9 +41,9 @@ app.use('/api', produtoRoutes);
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando redondinho na porta ${PORT}`);
 
-  // ===================================================
-  // 🤖 CONFIGURAÇÃO DO ROBÔ AUTOMÁTICO (CRON JOB)
-  // ===================================================
+  
+  // CONFIGURAÇÃO DO ROBÔ AUTOMÁTICO (CRON JOB)
+  
   
   // Executa a primeira varredura assim que você salva o código ou inicia o servidor
   console.log('🤖 Inicialização: Executando primeira varredura automática nos produtos...');
