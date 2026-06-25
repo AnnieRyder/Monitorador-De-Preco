@@ -15,12 +15,7 @@ O sistema conta com uma versão Web (Desktop) robusta, funcional e com interface
 | 💻 Interface Desktop (Concluída) | 📱 Interface Mobile (Em Construção) |
 | :---: | :---: |
 <img src="./frontend/src/assets/0625.gif" width="100%" alt="Dashboard Desktop"> 
-  <img src="./frontend/src/assets/tela 1 mobile.png" alt="telas">
-  <img src="./frontend/src/assets/mobile 2.png" alt="telas">
-  <img src="./frontend/src/assets/mobile3.png" alt="telas">
-  <img src="./frontend/src/assets/mobile4.png" alt="telas">
-  <img src="./frontend/src/assets/mobile5.png" alt="telas">
-  <img src="./frontend/src/assets/mobile 6.png" alt="telas">
+  <img src="./frontend/src/assets/tela 1 mobile.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 2.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile3.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile4.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile5.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 6.png" width="145" alt="telas">
 ---
 
 ## 🛠️ Tecnologias Utilizadas
