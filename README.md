@@ -12,10 +12,14 @@ O sistema conta com uma versão Web (Desktop) robusta, funcional e com interface
 
 ## 📸 Demonstração Visual
 
-| 💻 Interface Desktop (Concluída) | 📱 Interface Mobile (Em Construção) |
+| 💻 Interface Desktop (Concluída) 
 | :---: | :---: |
 <img src="./frontend/src/assets/0625.gif" width="100%" alt="Dashboard Desktop"> 
-  <img src="./frontend/src/assets/tela 1 mobile.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 2.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile3.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile4.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile5.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 6.png" width="145" alt="telas">
+
+
+| 📱 Interface Mobile (Em Construção) |
+
+  <img src="./frontend/src/assets/tela 1 mobile.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile 2.png" width="300" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile3.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile4.png" width="300" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile5.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile 6.png" width="300" alt="telas">
 ---
 
 ## 🛠️ Tecnologias Utilizadas
