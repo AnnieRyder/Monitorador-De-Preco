@@ -9,11 +9,12 @@ O **PreçoCerto** é uma plataforma inteligente de monitoramento e análise de p
 O sistema conta com uma versão Web (Desktop) robusta, funcional e com interface 100% validada. O módulo Mobile está atualmente em fase de construção e refinamento de layout, preparando a base para futuras integrações responsivas completas.
 
 ---
+
 ## 📸 Demonstração Visual
 
 | 💻 Interface Desktop (Concluída) | 📱 Interface Mobile (Em Construção) |
 | :---: | :---: |
-| <img src="./frontend/src/assets/0625.gif" width="920" height="" alt="Dashboard Desktop"> | <img src="./frontend/src/assets/tela 1 mobile.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile 2.png" width="300" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile3.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile4.png" width="300" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile5.png" width="300" alt="telas"> <img src="./frontend/src/assets/mobile 6.png" width="300" alt="telas"> |
+| <img src="./frontend/src/assets/0625.gif" width="420" alt="Dashboard Desktop"> | <img src="./frontend/src/assets/tela 1 mobile.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 2.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile3.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile4.png" width="145" alt="telas"> <br><br> <img src="./frontend/src/assets/mobile5.png" width="145" alt="telas"> <img src="./frontend/src/assets/mobile 6.png" width="145" alt="telas"> |
 
 ## 🛠️ Tecnologias Utilizadas
 
